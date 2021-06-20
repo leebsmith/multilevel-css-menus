@@ -9,9 +9,7 @@
           "nodes": [
             {
               "text": "New Metadata",
-              "href": "/file/new/new_metadata",
-			  "id": "test",
-			  "disabled": true
+              "href": "/file/new/new_metadata"
             },
             {
               "text": "New Gravity Data",

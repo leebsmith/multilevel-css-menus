@@ -1,0 +1,134 @@
+/* Some styling constants */
+:root {
+  --navbar-color: #254441;
+  --link-text-color: #f6f7f8;
+  --link-width: 6rem;
+  --hovered-link-color: #305753;
+  --font-size: 1rem;
+}
+
+nav {
+  font-family: Lato, sans-serif;
+  font-size: var(--font-size);
+  background: var(--navbar-color);
+  cursor: pointer;
+}
+
+nav ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+nav span {
+  text-align: center;
+  color: var(--link-text-color);
+  display: block;
+  transition: background 0.4s;
+  padding: 1rem;
+}
+
+/* Ignore the root span */
+nav > span {
+  display: none;
+}
+
+/* 
+ * LI's need to be positioned relatively, because descendant
+ * menus (which are children) are positioned absolutely.
+ */
+ nav li {
+  position: relative;
+  background: var(--navbar-color);
+}
+
+/* 
+ * All menus that are children of nav have no list-style-type and 
+ * a flex display type, with a column direction
+ */
+nav ul {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+/*
+ * Except for the menu that is an immediate child of nav,
+ * which has a row direction.
+ */
+nav > ul {
+  flex-direction: row;
+  justify-content: space-evenly;
+  box-shadow: 5px 5px 8px 0px rgba(0, 0, 0, 0.45); /* optional */
+}
+
+/* Set the width of menu items */
+nav ul > li {
+  width: var(--link-width);
+}
+
+/*
+ * All submenus are initially hidden (but colored)
+ */
+nav ul ul {
+  background: var(--navbar-color);
+  display: none;
+  box-shadow: 5px 5px 8px 0px rgba(0, 0, 0, 0.45);
+}
+
+/*
+ * First and subsequent level submenu appears under the horizontal
+ * main menu and are positioned absolutely.
+ */
+ nav > ul > li > ul {
+   position: absolute;
+   top: 100%;
+ }
+ 
+/*
+* All submenus after the first submenu appear the right of their parent.
+*/
+nav > ul > li > ul ul {
+  position: absolute;
+  top: 0%;
+  left: 100%;
+}
+
+/*
+ * Display submenus by hovering over the immediate parent "li"
+ */
+nav li:hover > ul { display: flex; }
+
+/*
+ * Highlight the hovered span
+ */
+nav span:hover { background: var(--hovered-link-color); }
+
+/*
+ * Every rule below is for asthetic styling. They are not
+ * needed for proper function of the menu system
+ */
+
+/* Decorate links that have vertical menus below them */
+nav span.downarrow::after {
+  content: "▼";
+  vertical-align: middle;
+  float: right;
+  font-size: var(--font-size);
+}
+
+/* Decorate links that have vertical menus to their right */
+nav span.rightarrow::after {
+  content: "▸";
+  float: right;
+  vertical-align: middle;
+  font-size: var(--font-size);
+}
+
+/*
+ * Put a bottom border on each list item, except the last one
+ */
+nav ul menu li:not(:last-child) {
+  border-bottom: 1px solid #333;
+}
+

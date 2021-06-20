@@ -1,0 +1,61 @@
+{
+  "text": "Root",
+  "nodes": [
+    {
+      "text": "File",
+      "nodes": [
+        {
+          "text": "New",
+          "nodes": [
+            {
+              "text": "New Metadata",
+              "func": "md_func"
+            },
+            {
+              "text": "New Gravity Data",
+              "func": ""
+            }
+          ]
+        },
+        {
+          "text": "Open",
+          "func": "open_func"
+        },
+        {
+          "text": "Save",
+          "func": ""
+        }
+      ]
+    },
+    {
+      "text": "View/Print Graph",
+      "nodes": [
+        {
+          "text": "From Metadata",
+          "func": ""
+        },
+        {
+          "text": "From Gravity Data",
+          "func": ""
+        }
+      ]
+    },
+    {
+      "text" : "Review Models",
+      "func": ""
+    },
+    {
+      "text": "Help",
+      "nodes": [
+        {
+          "text": "FAQ",
+          "func": ""
+        },
+        {
+          "text": "About",
+          "func": ""
+        }
+      ]
+    }
+  ]
+}

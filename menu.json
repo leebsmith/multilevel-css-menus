@@ -9,21 +9,23 @@
           "nodes": [
             {
               "text": "New Metadata",
-              "func": "md_func"
+              "href": "/file/new/new_metadata",
+			  "id": "test",
+			  "disabled": true
             },
             {
               "text": "New Gravity Data",
-              "func": ""
+              "href": "file/new/new_gravity_data"
             }
           ]
         },
         {
           "text": "Open",
-          "func": "open_func"
+          "href": "/file/open"
         },
         {
           "text": "Save",
-          "func": ""
+          "href": "/file/save"
         }
       ]
     },
@@ -32,28 +34,28 @@
       "nodes": [
         {
           "text": "From Metadata",
-          "func": ""
+          "href": "view_print/metadata"
         },
         {
           "text": "From Gravity Data",
-          "func": ""
+          "href": "view_print/gravity_data"
         }
       ]
     },
     {
       "text" : "Review Models",
-      "func": ""
+      "href": "/review"
     },
     {
       "text": "Help",
       "nodes": [
         {
           "text": "FAQ",
-          "func": ""
+          "href": "help/faq"
         },
         {
           "text": "About",
-          "func": ""
+          "href": "help/about"
         }
       ]
     }

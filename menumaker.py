@@ -7,48 +7,92 @@ from json.decoder import JSONDecodeError
 
 indent = 0
 
+# Leaves MUST contain 'text' and 'href' keys.
+# Leaves MAY contain 'id' and / or 'disabled' keys.
+# 'id', 'text', and 'href' must be strings. 'disabled' must be bool
+# Returns None if the node IS a leaf
 def isLeaf(node):
+
+    types = {
+        "id" : str,
+        "href" : str,
+        "disabled": bool,
+        "text": str,
+    }
+
     if not isinstance(node, dict):
-        return False;
+        return (f'{node} isn\'t a dict.')
 
-    # Test keys for number and matching content
-    if set(node.keys()) != {'text','func'}:
-        return False
+    keyset = node.keys()
 
-    # Test keys for type
-    keytypes = [
-        isinstance(node['text'],str),
-        isinstance(node['func'],str)
-    ]
+    # Insure all keys that are present are allowed
+    for key in keyset:
+        if not key in types.keys():
+            return (f'Key "{key}" isn\'t allowed in {node}.')
 
-    return keytypes == [True, True]
+    # Insure that all required keys are present
+    for key in {'text', 'href'}:
+        if not key in keyset:
+            return (f'Required key "{key}" not found in {node}.')
 
+    # Insure values are correct type
+    for keys in keyset:
+        if not isinstance(node[key], types[key]):
+            return (f'{key} must be a/an {types[key]} in {node}.')
+
+    return None
+
+# Parents MUST contain 'text' and 'nodes' keys.
+# 'text' must be str and 'nodes' must be list
+# Returns None if the node is a parent
 def isParent(node):
-    if not isinstance(node, dict):
-        return False;
 
-    # Test keys for number and matching content
-    if set(node.keys()) != {'text','nodes'}:
-        return False
+    types = {
+        "text": str,
+        "nodes": list
+    }
 
-    # Test keys for type
-    keytypes = [
-        isinstance(node['text'],str),
-        isinstance(node['nodes'],list)
-    ]
+    keyset = node.keys()
 
-    return keytypes == [True, True]
+    # Insure all keys that are present are allowed
+    for key in keyset:
+        if not key in types.keys():
+            return (f'Key "{key}" isn\'t allowed in {node}.')
+
+    # Insure that all required keys are present
+    for key in {'text', 'nodes'}:
+        if not key in keyset:
+            return (f'Required key "{key}" not found in {node}.')
+
+    # Insure values are correct type
+    for keys in keyset:
+        if not isinstance(node[key], types[key]):
+            return (f'{key} must be a/an {types[key]} in {node}.')
+
+    return None
 
 # Guarantees that the JSON structure consists
 # of only valid leaves and parents
 def validJSON(json):
 
-    # Must be either a leaf or parent
-    if not (isLeaf(json) or isParent(json)):
-        return False;
+    leafMsg = isLeaf(json)
+    parentMsg = isParent(json)
+
+    # Impossible case. Node is a leaf and a parent
+    if (leafMsg == None and parentMsg == None):
+        print("Internal error.")
+        return False
+
+    # Error case: node is not a leaf and node is not a parent
+    if (leafMsg != None and parentMsg != None):
+        print(f'Attempting to parse as a leaf: {leafMsg}')
+        print(f'Attempting to parse as a parent: {parentMsg}')
+        return False
+
+    # Normal case: leafMsg == None OR parentMsg == None
 
     # Leaf?
-    if isLeaf(json):
+    if leafMsg == None:
         return True
 
     # Parent!
@@ -57,32 +101,38 @@ def validJSON(json):
             if not validJSON(node):
                 return False
 
-    return True
+        return True
 
 def makeMenu(json):
     global indent
 
-    def makeSpan(txt, cls, func):
+    def makeAnchor(txt, target, disabled=None, idstr=None):
         
-        func = f' data-func="{func}"' if func else ''
-        cls = f' class="{cls}"' if cls else ''
-        html = f'<span{cls}{func}>{txt}</span>'
+        target = f' href="{target}"' if target else ''
+        disabled = f' class="disabled"' if disabled else ''
+        idstr = f' id="{idstr}"' if idstr else ''
+        html = f'<a{disabled}{idstr}{target}>{txt}</a>'
         return html
     
     # Leaf?
-    if isLeaf(json):
-        #printWithIndent('<li>')
+    if isLeaf(json) == None:
         indent += 1
-        printWithIndent(makeSpan(json['text'],None,json['func']))
+        disabled = None if 'disabled' not in json.keys() else \
+            json['disabled']
+        idstr = None if 'id' not in json.keys() else \
+            json['id']
+        printWithIndent(makeAnchor(json['text'],
+            json['href'],
+            disabled,
+            idstr))
         indent -= 1
-        #printWithIndent('</li>')
 
     # Parent!
     else:
         arrowClass = None if indent < 3 else (
              'downarrow' if indent == 3 else  'rightarrow ')
         
-        printWithIndent(makeSpan(json['text'],arrowClass,None))
+        printWithIndent(makeAnchor(json['text'],arrowClass,None))
         printWithIndent('<ul>')
         indent += 1
 

@@ -19,7 +19,8 @@ nav ul, li {
   padding: 0;
 }
 
-nav span {
+nav a {
+  text-decoration: none;
   text-align: center;
   color: var(--link-text-color);
   display: block;
@@ -27,8 +28,12 @@ nav span {
   padding: 1rem;
 }
 
-/* Ignore the root span */
-nav > span {
+nav a.disabled {
+	pointer-events: none
+}
+
+/* Ignore the root a */
+nav > a  {
   display: none;
 }
 
@@ -100,9 +105,9 @@ nav > ul > li > ul ul {
 nav li:hover > ul { display: flex; }
 
 /*
- * Highlight the hovered span
+ * Highlight the hovered anchor
  */
-nav span:hover { background: var(--hovered-link-color); }
+nav a:hover { background: var(--hovered-link-color); }
 
 /*
  * Every rule below is for asthetic styling. They are not
@@ -110,7 +115,7 @@ nav span:hover { background: var(--hovered-link-color); }
  */
 
 /* Decorate links that have vertical menus below them */
-nav span.downarrow::after {
+nav a.downarrow::after {
   content: "▼";
   vertical-align: middle;
   float: right;
@@ -118,7 +123,7 @@ nav span.downarrow::after {
 }
 
 /* Decorate links that have vertical menus to their right */
-nav span.rightarrow::after {
+nav a.rightarrow::after {
   content: "▸";
   float: right;
   vertical-align: middle;
